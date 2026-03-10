@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real-Time Bed Tracking — Hospital Resource Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+</head>
+<body class="bed-tracking-page">
+
+  <!-- NAVBAR -->
+  <header class="navbar scrolled" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-mark">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="6" fill="#0057B8"/>
+            <path d="M14 6v16M6 14h16" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span>Hospital Resource <strong>Tracker</strong></span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="bed-tracking.html" class="active">Bed Tracking</a>
+        <a href="index.html#features">Features</a>
+        <a href="login.html" class="nav-login-btn">Login</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <section class="bt-header">
+    <div class="section-inner">
+      <div class="bt-header-row">
+        <div>
+          <div class="hero-badge">
+            <span class="pulse-dot"></span>
+            Live Updating Every 2s
+          </div>
+          <h1 class="bt-title">Real-Time <em>Bed Tracking</em></h1>
+          <p class="bt-subtitle">Monitor bed availability across all hospital wards in real time.</p>
+        </div>
+        <div class="bt-clock">
+          <span class="bt-clock-label">Last Updated</span>
+          <span class="bt-clock-time" id="btLiveTime">--:--:--</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUMMARY CARDS -->
+  <section class="bt-summary">
+    <div class="section-inner">
+      <div class="bt-cards">
+        <div class="bt-card bt-card-total">
+          <div class="bt-card-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M2 12h20M2 12V7a2 2 0 012-2h4v7M6 7V5M18 12V7h-4v5M2 12v5M22 12v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <div class="bt-card-data">
+            <span class="bt-card-num" id="totalBeds">0</span>
+            <span class="bt-card-label">Total Beds</span>
+          </div>
+          <div class="bt-card-bar">
+            <div class="bt-card-bar-fill" id="totalBar" style="--bar-pct: 100%; --bar-color: var(--blue-main);"></div>
+          </div>
+        </div>
+
+        <div class="bt-card bt-card-occupied">
+          <div class="bt-card-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <div class="bt-card-data">
+            <span class="bt-card-num" id="occupiedBeds">0</span>
+            <span class="bt-card-label">Occupied Beds</span>
+          </div>
+          <div class="bt-card-bar">
+            <div class="bt-card-bar-fill" id="occupiedBar" style="--bar-pct: 0%; --bar-color: var(--amber);"></div>
+          </div>
+        </div>
+
+        <div class="bt-card bt-card-available">
+          <div class="bt-card-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M8 12l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/></svg>
+          </div>
+          <div class="bt-card-data">
+            <span class="bt-card-num" id="availableBeds">0</span>
+            <span class="bt-card-label">Available Beds</span>
+          </div>
+          <div class="bt-card-bar">
+            <div class="bt-card-bar-fill" id="availableBar" style="--bar-pct: 0%; --bar-color: var(--green);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WARD-WISE TABLE -->
+  <section class="bt-wards">
+    <div class="section-inner">
+      <div class="bt-wards-header">
+        <h2>Ward-Wise Breakdown</h2>
+        <div class="bt-legend">
+          <span class="bt-legend-item"><span class="bt-dot green"></span> Available</span>
+          <span class="bt-legend-item"><span class="bt-dot amber"></span> Occupied</span>
+          <span class="bt-legend-item"><span class="bt-dot red"></span> Critical (&lt;20%)</span>
+        </div>
+      </div>
+      <div class="bt-table-wrap">
+        <table class="bt-table">
+          <thead>
+            <tr>
+              <th>Ward</th>
+              <th>Total Beds</th>
+              <th>Occupied</th>
+              <th>Available</th>
+              <th>Occupancy</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="wardTableBody">
+            <!-- Rows injected by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- OCCUPANCY CHART (visual bars) -->
+  <section class="bt-chart-section">
+    <div class="section-inner">
+      <h2>Occupancy Overview</h2>
+      <div class="bt-bar-chart" id="barChart">
+        <!-- Bars injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo">
+          <div class="logo-mark">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+              <rect width="28" height="28" rx="6" fill="#0057B8"/>
+              <path d="M14 6v16M6 14h16" stroke="white" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span>Hospital Resource <strong>Tracker</strong></span>
+        </div>
+        <p>Real-time visibility for better patient care.</p>
+      </div>
+      <div class="footer-links">
+        <h5>Navigation</h5>
+        <a href="index.html">Home</a>
+        <a href="bed-tracking.html">Bed Tracking</a>
+        <a href="index.html#features">Features</a>
+        <a href="login.html">Login</a>
+      </div>
+      <div class="footer-contact">
+        <h5>Contact</h5>
+        <p>📧 support@hrt-system.health</p>
+        <p>📞 +1 (800) 555-HOSP</p>
+        <p>🏥 Available 24/7 for hospitals</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Hospital Resource Tracker. All rights reserved. Built for healthcare professionals.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

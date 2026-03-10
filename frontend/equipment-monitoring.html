@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Equipment Monitoring — Hospital Resource Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+</head>
+<body class="equipment-page">
+
+  <!-- NAVBAR -->
+  <header class="navbar scrolled" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-mark">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="6" fill="#0057B8"/>
+            <path d="M14 6v16M6 14h16" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span>Hospital Resource <strong>Tracker</strong></span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="equipment-monitoring.html" class="active">Equipment</a>
+        <a href="index.html#features">Features</a>
+        <a href="login.html" class="nav-login-btn">Login</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <section class="bt-header">
+    <div class="section-inner">
+      <div class="bt-header-row">
+        <div>
+          <div class="hero-badge">
+            <span class="pulse-dot"></span>
+            Live Updating Every 2s
+          </div>
+          <h1 class="bt-title">Equipment <em>Monitoring</em></h1>
+          <p class="bt-subtitle">Track all critical medical equipment across departments in real time.</p>
+        </div>
+        <div class="bt-clock">
+          <span class="bt-clock-label">Last Updated</span>
+          <span class="bt-clock-time" id="eqLiveTime">--:--:--</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUMMARY CARDS -->
+  <section class="bt-summary">
+    <div class="section-inner">
+      <div class="eq-summary-cards">
+
+        <div class="bt-card eq-card-total">
+          <div class="bt-card-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="bt-card-data">
+            <span class="bt-card-num" id="eqTotal">0</span>
+            <span class="bt-card-label">Total Equipment</span>
+          </div>
+          <div class="bt-card-bar">
+            <div class="bt-card-bar-fill" id="eqTotalBar" style="--bar-pct: 100%; --bar-color: var(--blue-main);"></div>
+          </div>
+        </div>
+
+        <div class="bt-card eq-card-active">
+          <div class="bt-card-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M8 12l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/></svg>
+          </div>
+          <div class="bt-card-data">
+            <span class="bt-card-num" id="eqActive">0</span>
+            <span class="bt-card-label">In Use / Active</span>
+          </div>
+          <div class="bt-card-bar">
+            <div class="bt-card-bar-fill" id="eqActiveBar" style="--bar-pct: 0%; --bar-color: var(--green);"></div>
+          </div>
+        </div>
+
+        <div class="bt-card eq-card-available">
+          <div class="bt-card-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M8 12h8M8 8h5M8 16h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="bt-card-data">
+            <span class="bt-card-num" id="eqAvailable">0</span>
+            <span class="bt-card-label">Available / Standby</span>
+          </div>
+          <div class="bt-card-bar">
+            <div class="bt-card-bar-fill" id="eqAvailableBar" style="--bar-pct: 0%; --bar-color: var(--blue-mid);"></div>
+          </div>
+        </div>
+
+        <div class="bt-card eq-card-maintenance">
+          <div class="bt-card-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.2a2 2 0 01-2.83 0l-.1-.1a2 2 0 010-2.83l6.73-6.73A6 6 0 0114.7 6.3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="bt-card-data">
+            <span class="bt-card-num" id="eqMaintenance">0</span>
+            <span class="bt-card-label">Under Maintenance</span>
+          </div>
+          <div class="bt-card-bar">
+            <div class="bt-card-bar-fill" id="eqMaintenanceBar" style="--bar-pct: 0%; --bar-color: var(--red);"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPMENT TABLE -->
+  <section class="bt-wards">
+    <div class="section-inner">
+      <div class="bt-wards-header">
+        <h2>Equipment Breakdown by Category</h2>
+        <div class="bt-legend">
+          <span class="bt-legend-item"><span class="bt-dot green"></span> Available</span>
+          <span class="bt-legend-item"><span class="bt-dot amber"></span> In Use</span>
+          <span class="bt-legend-item"><span class="bt-dot red"></span> Maintenance</span>
+        </div>
+      </div>
+      <div class="bt-table-wrap">
+        <table class="bt-table">
+          <thead>
+            <tr>
+              <th>Equipment</th>
+              <th>Total</th>
+              <th>In Use</th>
+              <th>Available</th>
+              <th>Maintenance</th>
+              <th>Usage</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="eqTableBody">
+            <!-- Rows injected by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- USAGE CHART -->
+  <section class="bt-chart-section">
+    <div class="section-inner">
+      <h2>Usage Rate by Equipment</h2>
+      <div class="bt-bar-chart" id="eqBarChart">
+        <!-- Bars injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ALERTS SECTION -->
+  <section class="eq-alerts-section">
+    <div class="section-inner">
+      <h2>Active Alerts</h2>
+      <div class="eq-alerts-list" id="eqAlertsList">
+        <!-- Alerts injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo">
+          <div class="logo-mark">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+              <rect width="28" height="28" rx="6" fill="#0057B8"/>
+              <path d="M14 6v16M6 14h16" stroke="white" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span>Hospital Resource <strong>Tracker</strong></span>
+        </div>
+        <p>Real-time visibility for better patient care.</p>
+      </div>
+      <div class="footer-links">
+        <h5>Navigation</h5>
+        <a href="index.html">Home</a>
+        <a href="bed-tracking.html">Bed Tracking</a>
+        <a href="equipment-monitoring.html">Equipment</a>
+        <a href="index.html#features">Features</a>
+        <a href="login.html">Login</a>
+      </div>
+      <div class="footer-contact">
+        <h5>Contact</h5>
+        <p>📧 support@hrt-system.health</p>
+        <p>📞 +1 (800) 555-HOSP</p>
+        <p>🏥 Available 24/7 for hospitals</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Hospital Resource Tracker. All rights reserved. Built for healthcare professionals.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
