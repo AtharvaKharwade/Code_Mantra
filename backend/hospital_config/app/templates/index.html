@@ -15,7 +15,7 @@
   <!-- NAVBAR -->
   <header class="navbar" id="navbar">
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo">
+      <a href="{% url 'index' %}" class="left-logo">
         <div class="logo-mark">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
             <rect width="28" height="28" rx="6" fill="#0057B8"/>
@@ -28,7 +28,7 @@
         <a href="#home">Home</a>
         <a href="#features">Features</a>
         <a href="#how-it-works">About</a>
-        <a href="login/" class="nav-login-btn">Login</a>
+        <a href="{% url 'login' %}" class="nav-login-btn">Login</a>
       </nav>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
@@ -146,7 +146,7 @@
       <h2 class="section-title">Everything you need to<br/><em>manage hospital resources</em></h2>
       <div class="features-grid">
 
-        <div class="feature-card" data-delay="0">
+        <a href="{% url 'bed_tracking' %}" class="feature-card" data-delay="0">
           <div class="card-icon-wrap blue">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M2 12h20M2 12V7a2 2 0 012-2h4v7M6 7V5M18 12V7h-4v5M2 12v5M22 12v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
           </div>
@@ -156,9 +156,15 @@
             <span class="metric-num">2s</span>
             <span class="metric-label">avg update interval</span>
           </div>
-        </div>
+          <div class="card-cta">
+            View Dashboard
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </a>
 
-        <div class="feature-card featured" data-delay="100">
+        <a href="{% url 'equipment_monitoring' %}" class="feature-card featured" data-delay="100">
           <div class="card-badge">Most Used</div>
           <div class="card-icon-wrap white">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -169,9 +175,15 @@
             <span class="metric-num">100+</span>
             <span class="metric-label">equipment types tracked</span>
           </div>
-        </div>
+          <div class="card-cta" style="color: rgba(255,255,255,.85);">
+            View Dashboard
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </a>
 
-        <div class="feature-card" data-delay="200">
+        <a href="{% url 'emergency_allocation' %}" class="feature-card" data-delay="200">
           <div class="card-icon-wrap red">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
           </div>
@@ -181,9 +193,15 @@
             <span class="metric-num">40%</span>
             <span class="metric-label">faster emergency response</span>
           </div>
-        </div>
+          <div class="card-cta">
+            View Dashboard
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </a>
 
-        <div class="feature-card" data-delay="300">
+        <a href="{% url 'patient_queue' %}" class="feature-card" data-delay="300">
           <div class="card-icon-wrap blue">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
@@ -193,7 +211,13 @@
             <span class="metric-num">60%</span>
             <span class="metric-label">reduced wait times</span>
           </div>
-        </div>
+          <div class="card-cta">
+            View Dashboard
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </a>
 
       </div>
     </div>

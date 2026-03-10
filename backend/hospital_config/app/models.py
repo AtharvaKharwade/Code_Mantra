@@ -14,9 +14,7 @@ class HospitalResource(models.Model):
     available = models.IntegerField()
     last_updated = models.DateTimeField(auto_now=True)
 
-<<<<<<< HEAD
 
-=======
     def __str__(self):
         return f"{self.name} - {self.available}/{self.total}"
 
@@ -38,4 +36,81 @@ class Staff(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.role}"
->>>>>>> 5cd373e5386aff35840cfe61f3e70e463e870fe2
+
+
+class PatientQueue(models.Model):
+
+    TRIAGE_LEVELS = [
+        ("P1", "Critical"),
+        ("P2", "Urgent"),
+        ("P3", "Standard"),
+    ]
+
+    STATUS_CHOICES = [
+        ("waiting", "Waiting"),
+        ("treating", "Being Treated"),
+        ("discharged", "Discharged"),
+    ]
+
+    patient_id = models.CharField(max_length=50, unique=True)
+
+    chief_complaint = models.CharField(max_length=255)
+
+    triage_level = models.CharField(max_length=5, choices=TRIAGE_LEVELS)
+
+    assigned_to = models.CharField(max_length=100, blank=True, null=True)
+
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="waiting")
+
+    arrival_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.patient_id} - {self.triage_level}"
+    
+class EmergencyResource(models.Model):
+
+    STATUS_CHOICES = [
+        ("ready", "Ready"),
+        ("strained", "Strained"),
+        ("overloaded", "Overloaded"),
+    ]
+
+    department = models.CharField(max_length=100)
+
+    staff = models.IntegerField()
+
+    beds_free = models.IntegerField()
+
+    equipment = models.CharField(max_length=200)
+
+    load_percentage = models.IntegerField()
+
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
+
+    def __str__(self):
+        return f"{self.department} - {self.status}"
+    
+class WardBed(models.Model):
+
+    ward_name = models.CharField(max_length=100)
+
+    total_beds = models.IntegerField()
+
+    occupied_beds = models.IntegerField()
+
+    available_beds = models.IntegerField()
+
+    def occupancy_percentage(self):
+        return int((self.occupied_beds / self.total_beds) * 100)
+
+    def status(self):
+        pct = self.occupancy_percentage()
+        if pct > 80:
+            return "Critical"
+        elif pct > 50:
+            return "Busy"
+        else:
+            return "Available"
+
+    def __str__(self):
+        return self.ward_name

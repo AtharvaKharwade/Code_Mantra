@@ -1,0 +1,304 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Emergency Resource Allocation — Hospital Resource Tracker</title>
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+</head>
+
+
+<body class="emergency-page">
+
+
+<!-- NAVBAR -->
+<header class="navbar scrolled" id="navbar">
+
+<div class="nav-inner">
+
+<a href="{% url 'index' %}" class="nav-logo">
+
+<div class="logo-mark">
+
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+<rect width="28" height="28" rx="6" fill="#0057B8"/>
+<path d="M14 6v16M6 14h16" stroke="white" stroke-width="3" stroke-linecap="round"/>
+</svg>
+
+</div>
+
+<span>Hospital Resource <strong>Tracker</strong></span>
+
+</a>
+
+
+<nav class="nav-links" id="navLinks">
+
+<a href="{% url 'index' %}">Home</a>
+<a href="{% url 'emergency_allocation' %}">Emergency</a>
+<a href="{% url 'index' %}#features">Features</a>
+<a href="{% url 'login' %}" class="nav-login-btn">Login</a>
+
+</nav>
+
+
+<button class="hamburger" id="hamburger">
+
+<span></span>
+<span></span>
+<span></span>
+
+</button>
+
+</div>
+
+</header>
+
+
+<!-- PAGE HEADER -->
+<section class="em-header">
+
+<div class="section-inner">
+
+<div class="bt-header-row">
+
+<div>
+
+<div class="em-badge">
+<span class="em-pulse"></span>
+Emergency Mode Active
+</div>
+
+<h1 class="bt-title">
+Emergency <em>Resource Allocation</em>
+</h1>
+
+<p class="bt-subtitle">
+Rapidly redirect beds, staff, and equipment to where they're needed most during critical events.
+</p>
+
+</div>
+
+
+<div class="bt-clock">
+
+<span class="bt-clock-label">Last Updated</span>
+<span class="bt-clock-time" id="emLiveTime">--:--:--</span>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SUMMARY CARDS -->
+<section class="bt-summary">
+
+<div class="section-inner">
+
+<div class="eq-summary-cards">
+
+
+<div class="bt-card em-card-beds">
+
+<div class="bt-card-icon">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+<path d="M2 12h20M2 12V7a2 2 0 012-2h4v7M6 7V5M18 12V7h-4v5M2 12v5M22 12v5"
+stroke="currentColor" stroke-width="1.8"/>
+</svg>
+</div>
+
+<div class="bt-card-data">
+<span id="emBeds">{{ beds }}</span>
+<span class="bt-card-label">Emergency Beds Free</span>
+</div>
+
+</div>
+
+
+
+<div class="bt-card em-card-staff">
+
+<div class="bt-card-icon">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"
+stroke="currentColor" stroke-width="1.8"/>
+</svg>
+</div>
+
+<div class="bt-card-data">
+<span id="emStaff">{{ staff }}</span>
+<span class="bt-card-label">Staff On Duty</span>
+</div>
+
+</div>
+
+
+
+<div class="bt-card em-card-ambulance">
+
+<div class="bt-card-icon">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+<rect x="1" y="6" width="15" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/>
+</svg>
+</div>
+
+<div class="bt-card-data">
+<span id="emAmbulance">{{ ambulance }}</span>
+<span class="bt-card-label">Ambulances Available</span>
+</div>
+
+</div>
+
+
+
+<div class="bt-card em-card-ot">
+
+<div class="bt-card-icon">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+<path d="M12 2v4M12 18v4" stroke="currentColor" stroke-width="1.8"/>
+</svg>
+</div>
+
+<div class="bt-card-data">
+<span id="emOT">{{ ot }}</span>
+<span class="bt-card-label">OT Rooms Ready</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- DEPARTMENT TABLE -->
+<section class="bt-wards">
+
+<div class="section-inner">
+
+<div class="bt-wards-header">
+
+<h2>Department-Wise Emergency Resources</h2>
+
+</div>
+
+
+<div class="bt-table-wrap">
+
+<table class="bt-table">
+
+<thead>
+
+<tr>
+<th>Department</th>
+<th>Staff</th>
+<th>Beds Free</th>
+<th>Equipment</th>
+<th>Load</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+
+<tbody>
+
+{% for r in resources %}
+
+<tr>
+
+<td>{{ r.department }}</td>
+<td>{{ r.staff }}</td>
+<td>{{ r.beds_free }}</td>
+<td>{{ r.equipment }}</td>
+<td>{{ r.load_percentage }}%</td>
+<td>{{ r.status }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- FOOTER -->
+<footer class="footer">
+
+<div class="footer-inner">
+
+<div class="footer-brand">
+
+<div class="nav-logo">
+
+<div class="logo-mark">
+
+<svg width="24" height="24" viewBox="0 0 28 28">
+<rect width="28" height="28" rx="6" fill="#0057B8"/>
+</svg>
+
+</div>
+
+<span>Hospital Resource <strong>Tracker</strong></span>
+
+</div>
+
+<p>Real-time visibility for better patient care.</p>
+
+</div>
+
+
+<div class="footer-links">
+
+<h5>Navigation</h5>
+
+<a href="{% url 'index' %}">Home</a>
+<a href="{% url 'bed_tracking' %}">Bed Tracking</a>
+<a href="{% url 'emergency_allocation' %}">Emergency</a>
+<a href="{% url 'patient_queue' %}">Patient Queue</a>
+<a href="{% url 'login' %}">Login</a>
+
+</div>
+
+</div>
+
+
+<div class="footer-bottom">
+
+<p>
+© 2026 Hospital Resource Tracker. All rights reserved.
+</p>
+
+</div>
+
+</footer>
+
+
+<script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>
