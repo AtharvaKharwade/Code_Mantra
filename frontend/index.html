@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Resource Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-mark">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="6" fill="#0057B8"/>
+            <path d="M14 6v16M6 14h16" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span>Hospital Resource <strong>Tracker</strong></span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">About</a>
+        <a href="login.html" class="nav-login-btn">Login</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        Live Monitoring System
+      </div>
+      <h1 class="hero-title">
+        Real-Time Hospital<br/>
+        <em>Resource Tracking</em><br/>
+        System
+      </h1>
+      <p class="hero-sub">
+        Empower hospital staff to monitor beds, ICU units, ventilators, and operating rooms in real time — reducing delays and saving lives.
+      </p>
+      <div class="hero-actions">
+        <a href="login.html" class="btn btn-primary">Login to Dashboard</a>
+        <a href="#features" class="btn btn-ghost">
+          Learn More
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="dashboard-card">
+        <div class="dash-header">
+          <div class="dash-title-row">
+            <span class="dash-dot green"></span>
+            <span class="dash-label">Live Overview — Ward A</span>
+            <span class="dash-time" id="liveTime"></span>
+          </div>
+        </div>
+        <div class="dash-stats">
+          <div class="stat-item">
+            <div class="stat-icon bed">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M2 12h20M2 12V7a2 2 0 012-2h4v7M6 7V5M18 12V7h-4v5M2 12v5M22 12v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-val">48<small>/72</small></span>
+              <span class="stat-name">Beds Available</span>
+            </div>
+            <div class="stat-bar-wrap">
+              <div class="stat-bar" style="--pct: 66%; --color: #0057B8;"></div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon icu">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-val warn">6<small>/12</small></span>
+              <span class="stat-name">ICU Units Free</span>
+            </div>
+            <div class="stat-bar-wrap">
+              <div class="stat-bar" style="--pct: 50%; --color: #F59E0B;"></div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon vent">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 5 5 8c0 4 4 7 7 10 3-3 7-6 7-10 0-3-3-6-7-6z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="8" r="2" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-val crit">3<small>/18</small></span>
+              <span class="stat-name">Ventilators Ready</span>
+            </div>
+            <div class="stat-bar-wrap">
+              <div class="stat-bar" style="--pct: 17%; --color: #EF4444;"></div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon room">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M9 3v18M3 9h6M3 15h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-val">11<small>/15</small></span>
+              <span class="stat-name">Rooms Available</span>
+            </div>
+            <div class="stat-bar-wrap">
+              <div class="stat-bar" style="--pct: 73%; --color: #10B981;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="dash-footer">
+          <div class="dash-alert">
+            <span class="alert-dot"></span>
+            ICU capacity below threshold — Review recommended
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="section-inner">
+      <div class="section-label">Core Capabilities</div>
+      <h2 class="section-title">Everything you need to<br/><em>manage hospital resources</em></h2>
+      <div class="features-grid">
+
+        <div class="feature-card" data-delay="0">
+          <div class="card-icon-wrap blue">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M2 12h20M2 12V7a2 2 0 012-2h4v7M6 7V5M18 12V7h-4v5M2 12v5M22 12v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Real-Time Bed Tracking</h3>
+          <p>Monitor every bed across all wards instantly. See occupancy rates, pending discharges, and projected availability with live data updates.</p>
+          <div class="card-metric">
+            <span class="metric-num">2s</span>
+            <span class="metric-label">avg update interval</span>
+          </div>
+        </div>
+
+        <div class="feature-card featured" data-delay="100">
+          <div class="card-badge">Most Used</div>
+          <div class="card-icon-wrap white">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Equipment Monitoring</h3>
+          <p>Track ventilators, defibrillators, imaging machines, and surgical tools. Receive instant alerts when critical equipment drops below safe thresholds.</p>
+          <div class="card-metric">
+            <span class="metric-num">100+</span>
+            <span class="metric-label">equipment types tracked</span>
+          </div>
+        </div>
+
+        <div class="feature-card" data-delay="200">
+          <div class="card-icon-wrap red">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Emergency Resource Allocation</h3>
+          <p>Rapidly redirect beds, staff, and medical equipment during emergencies. Prioritize critical cases and coordinate across departments seamlessly.</p>
+          <div class="card-metric">
+            <span class="metric-num">40%</span>
+            <span class="metric-label">faster emergency response</span>
+          </div>
+        </div>
+
+        <div class="feature-card" data-delay="300">
+          <div class="card-icon-wrap blue">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Emergency Patient Queue System</h3>
+          <p>Triage and prioritize incoming patients automatically based on severity. Manage emergency queues in real time to ensure the most critical cases are treated first.</p>
+          <div class="card-metric">
+            <span class="metric-num">60%</span>
+            <span class="metric-label">reduced wait times</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="hiw-bg"></div>
+    <div class="section-inner">
+      <div class="section-label light">Simple Workflow</div>
+      <h2 class="section-title light">Four steps to full<br/><em>resource visibility</em></h2>
+      <div class="steps-timeline">
+
+        <div class="step" data-step="01">
+          <div class="step-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <div class="step-body">
+            <h4>Staff Login</h4>
+            <p>Authorized hospital personnel sign in securely with role-based access credentials.</p>
+          </div>
+        </div>
+
+        <div class="step-connector"></div>
+
+        <div class="step" data-step="02">
+          <div class="step-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M8 12h8M8 8h5M8 16h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="step-body">
+            <h4>Monitor Resources</h4>
+            <p>View live dashboards showing beds, ICU units, ventilators, and all critical equipment.</p>
+          </div>
+        </div>
+
+        <div class="step-connector"></div>
+
+        <div class="step" data-step="03">
+          <div class="step-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <div class="step-body">
+            <h4>Update Availability</h4>
+            <p>Staff update resource status in real time — marking discharges, cleanings, or repairs instantly.</p>
+          </div>
+        </div>
+
+        <div class="step-connector"></div>
+
+        <div class="step" data-step="04">
+          <div class="step-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="step-body">
+            <h4>Allocate in Emergencies</h4>
+            <p>During critical events, dispatch resources rapidly to where they are needed most.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo">
+          <div class="logo-mark">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+              <rect width="28" height="28" rx="6" fill="#0057B8"/>
+              <path d="M14 6v16M6 14h16" stroke="white" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span>Hospital Resource <strong>Tracker</strong></span>
+        </div>
+        <p>Real-time visibility for better patient care.</p>
+      </div>
+      <div class="footer-links">
+        <h5>Navigation</h5>
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="login.html">Login</a>
+      </div>
+      <div class="footer-contact">
+        <h5>Contact</h5>
+        <p>📧 support@hrt-system.health</p>
+        <p>📞 +1 (800) 555-HOSP</p>
+        <p>🏥 Available 24/7 for hospitals</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Hospital Resource Tracker. All rights reserved. Built for healthcare professionals.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
