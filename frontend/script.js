@@ -610,3 +610,214 @@ if (document.body.classList.contains('emergency-page')) {
   updateEmergencyData();
   setInterval(updateEmergencyData, 2000);
 }
+
+// ========== PATIENT QUEUE PAGE ==========
+if (document.body.classList.contains('patient-queue-page')) {
+
+  const COMPLAINTS = [
+    'Chest pain', 'Difficulty breathing', 'Severe abdominal pain', 'Head trauma',
+    'Fracture — left arm', 'Laceration — forehead', 'High fever (40°C)',
+    'Allergic reaction', 'Stroke symptoms', 'Burn injury — 2nd degree',
+    'Cardiac arrhythmia', 'Seizure', 'Back pain — acute', 'Asthma attack',
+    'Diabetic emergency', 'Minor cut — hand', 'Sprained ankle', 'Migraine',
+    'Nausea / vomiting', 'Eye injury', 'Dislocated shoulder', 'Drug overdose',
+  ];
+
+  const DOCTORS = [
+    'Dr. Patel', 'Dr. Nguyen', 'Dr. Kim', 'Dr. Rivera', 'Dr. Johnson',
+    'Dr. Ahmed', 'Dr. Chen', 'Dr. Williams', 'Dr. Sharma', 'Dr. Lee',
+  ];
+
+  const ALERT_TEMPLATES = [
+    { type: 'critical', text: 'P1 patient waiting over 5 min — immediate attention required' },
+    { type: 'critical', text: 'New critical patient arriving via ambulance — ETA 2 min' },
+    { type: 'critical', text: 'Triage overflow — redirecting to secondary ER bay' },
+    { type: 'warning', text: 'P2 queue exceeding 15-minute target wait time' },
+    { type: 'warning', text: 'Multiple P1 patients — additional on-call staff requested' },
+    { type: 'warning', text: 'Waiting room at 85% capacity — consider fast-tracking P3' },
+    { type: 'info', text: 'Shift change complete — all triage stations staffed' },
+    { type: 'info', text: '3 patients discharged — queue capacity improving' },
+    { type: 'info', text: 'Average wait time below 10 min — queue is flowing smoothly' },
+    { type: 'info', text: 'New triage nurse assigned to Bay 4' },
+  ];
+
+  const pqLiveTime      = document.getElementById('pqLiveTime');
+  const pqStatsBanner   = document.getElementById('pqStatsBanner');
+  const pqAvgWait       = document.getElementById('pqAvgWait');
+  const pqQueueStatus   = document.getElementById('pqQueueStatus');
+  const pqWaiting       = document.getElementById('pqWaiting');
+  const pqTreating      = document.getElementById('pqTreating');
+  const pqCritical      = document.getElementById('pqCritical');
+  const pqDischarged    = document.getElementById('pqDischarged');
+  const pqWaitingBar    = document.getElementById('pqWaitingBar');
+  const pqTreatingBar   = document.getElementById('pqTreatingBar');
+  const pqCriticalBar   = document.getElementById('pqCriticalBar');
+  const pqDischargedBar = document.getElementById('pqDischargedBar');
+  const pqTableBody     = document.getElementById('pqTableBody');
+  const pqBarChart      = document.getElementById('pqBarChart');
+  const pqAlertsList    = document.getElementById('pqAlertsList');
+
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    const open = hamburger.classList.toggle('open');
+    navLinks.classList.toggle('open', open);
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      navLinks.classList.remove('open');
+    });
+  });
+
+  function rand(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function generatePatientId() {
+    return 'PT-' + String(rand(10000, 99999));
+  }
+
+  function updatePatientQueue() {
+    const now = new Date();
+
+    // Generate patient data
+    const totalPatients = rand(18, 35);
+    const p1Count = rand(2, 6);
+    const p2Count = rand(5, 12);
+    const p3Count = totalPatients - p1Count - p2Count;
+
+    const treatingCount = rand(8, 16);
+    const waitingCount = totalPatients - treatingCount;
+    const dischargedToday = rand(20, 55);
+
+    // Average wait time in minutes
+    const avgWaitMin = rand(4, 28);
+
+    // Clock
+    pqLiveTime.textContent = now.toLocaleTimeString('en-US', {
+      hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+    });
+
+    // Stats banner
+    pqAvgWait.textContent = avgWaitMin + ' min';
+    pqStatsBanner.className = 'pq-stats-banner';
+    if (avgWaitMin <= 10) {
+      pqStatsBanner.classList.add('wait-low');
+      pqQueueStatus.textContent = 'Queue flowing smoothly — all triage stations active';
+    } else if (avgWaitMin <= 20) {
+      pqStatsBanner.classList.add('wait-medium');
+      pqQueueStatus.textContent = 'Moderate wait times — monitoring for bottlenecks';
+    } else {
+      pqStatsBanner.classList.add('wait-high');
+      pqQueueStatus.textContent = 'High wait times — consider opening additional bays';
+    }
+
+    // Summary cards
+    pqWaiting.textContent = waitingCount;
+    pqTreating.textContent = treatingCount;
+    pqCritical.textContent = p1Count;
+    pqDischarged.textContent = dischargedToday;
+
+    const maxQueue = 50;
+    pqWaitingBar.style.setProperty('--bar-pct', Math.round((waitingCount / maxQueue) * 100) + '%');
+    pqTreatingBar.style.setProperty('--bar-pct', Math.round((treatingCount / maxQueue) * 100) + '%');
+    pqCriticalBar.style.setProperty('--bar-pct', Math.round((p1Count / 10) * 100) + '%');
+    pqDischargedBar.style.setProperty('--bar-pct', Math.round((dischargedToday / 70) * 100) + '%');
+
+    // Build patient table
+    const patients = [];
+    const statuses = ['Waiting', 'In Triage', 'Being Treated', 'Awaiting Results'];
+
+    for (let i = 0; i < p1Count; i++) {
+      patients.push({
+        id: generatePatientId(),
+        triage: 'P1',
+        triageCls: 'p1',
+        triageLabel: 'Critical',
+        complaint: COMPLAINTS[rand(0, 5)],
+        waitMin: rand(1, 8),
+        doctor: DOCTORS[rand(0, DOCTORS.length - 1)],
+        status: i < 2 ? 'Being Treated' : statuses[rand(0, 1)],
+      });
+    }
+    for (let i = 0; i < p2Count; i++) {
+      patients.push({
+        id: generatePatientId(),
+        triage: 'P2',
+        triageCls: 'p2',
+        triageLabel: 'Urgent',
+        complaint: COMPLAINTS[rand(3, 14)],
+        waitMin: rand(5, 25),
+        doctor: DOCTORS[rand(0, DOCTORS.length - 1)],
+        status: statuses[rand(0, 3)],
+      });
+    }
+    for (let i = 0; i < p3Count; i++) {
+      patients.push({
+        id: generatePatientId(),
+        triage: 'P3',
+        triageCls: 'p3',
+        triageLabel: 'Standard',
+        complaint: COMPLAINTS[rand(12, COMPLAINTS.length - 1)],
+        waitMin: rand(10, 45),
+        doctor: i % 3 === 0 ? DOCTORS[rand(0, DOCTORS.length - 1)] : '—',
+        status: statuses[rand(0, 1)],
+      });
+    }
+
+    // Sort by triage priority (P1 first)
+    patients.sort((a, b) => a.triage.localeCompare(b.triage));
+
+    let tbodyHTML = '';
+    for (const p of patients) {
+      const waitColor = p.waitMin > 20 ? 'var(--red)' : p.waitMin > 10 ? 'var(--amber)' : 'var(--green)';
+      const statusCls = p.status === 'Being Treated' ? 'normal' : p.status === 'Waiting' ? 'warning' : 'info-status';
+      tbodyHTML += `
+        <tr>
+          <td class="ward-name">${p.id}</td>
+          <td><span class="pq-triage-badge ${p.triageCls}">${p.triageLabel}</span></td>
+          <td>${p.complaint}</td>
+          <td style="color:${waitColor}; font-weight:500;">${p.waitMin} min</td>
+          <td>${p.doctor}</td>
+          <td><span class="bt-status-badge ${statusCls}">${p.status}</span></td>
+        </tr>`;
+    }
+    pqTableBody.innerHTML = tbodyHTML;
+
+    // Triage distribution bar chart
+    const triageLevels = [
+      { label: 'Critical (P1)', count: p1Count, color: 'var(--red)', pct: Math.round((p1Count / totalPatients) * 100) },
+      { label: 'Urgent (P2)', count: p2Count, color: 'var(--amber)', pct: Math.round((p2Count / totalPatients) * 100) },
+      { label: 'Standard (P3)', count: p3Count, color: 'var(--green)', pct: Math.round((p3Count / totalPatients) * 100) },
+    ];
+
+    let chartHTML = '';
+    for (const t of triageLevels) {
+      chartHTML += `
+        <div class="bt-bar-row">
+          <span class="bt-bar-label">${t.label}</span>
+          <div class="bt-bar-track">
+            <div class="bt-bar-fill-occupied" style="width:${t.pct}%; background:${t.color};"></div>
+          </div>
+          <span class="bt-bar-pct">${t.count} (${t.pct}%)</span>
+        </div>`;
+    }
+    pqBarChart.innerHTML = chartHTML;
+
+    // Alerts
+    const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+    const alertCount = rand(2, 4);
+    const shuffled = ALERT_TEMPLATES.sort(() => 0.5 - Math.random()).slice(0, alertCount);
+    let alertHTML = '';
+    for (const a of shuffled) {
+      const cls = a.type === 'critical' ? 'alert-critical' : a.type === 'warning' ? 'alert-warning' : 'alert-info';
+      alertHTML += `<div class="eq-alert-item ${cls}"><span class="eq-alert-dot"></span>${a.text}<span class="eq-alert-time">${timeStr}</span></div>`;
+    }
+    pqAlertsList.innerHTML = alertHTML;
+  }
+
+  updatePatientQueue();
+  setInterval(updatePatientQueue, 2000);
+}

@@ -417,6 +417,8 @@ body {
   overflow: hidden;
   animation: fadeUp 0.6s ease both;
   animation-delay: calc(var(--delay, 0) * 1ms);
+  display: flex;
+  flex-direction: column;
 }
 .feature-card:hover {
   transform: translateY(-5px);
@@ -424,10 +426,14 @@ body {
   border-color: var(--blue-main);
 }
 a.feature-card {
-  display: block;
+  display: flex;
+  flex-direction: column;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
+}
+.feature-card p {
+  flex: 1;
 }
 a.feature-card h3, a.feature-card p { color: inherit; }
 a.feature-card h3 { color: var(--gray-800); }
@@ -439,7 +445,8 @@ a.feature-card:hover {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 14px;
+  margin-top: auto;
+  padding-top: 14px;
   font-size: 13.5px;
   font-weight: 500;
   color: var(--blue-main);
@@ -1286,6 +1293,7 @@ body.bed-tracking-page {
 .bt-status-badge.normal { background: #ECFDF5; color: #065F46; }
 .bt-status-badge.warning { background: #FFFBEB; color: #92400E; }
 .bt-status-badge.critical { background: #FEF2F2; color: #991B1B; }
+.bt-status-badge.info-status { background: #EBF3FF; color: var(--blue-deep); }
 
 .bt-status-badge::before {
   content: '';
@@ -1296,6 +1304,7 @@ body.bed-tracking-page {
 .bt-status-badge.normal::before { background: var(--green); }
 .bt-status-badge.warning::before { background: var(--amber); }
 .bt-status-badge.critical::before { background: var(--red); }
+.bt-status-badge.info-status::before { background: var(--blue-main); }
 
 /* Bar Chart */
 .bt-chart-section {
@@ -1585,6 +1594,164 @@ body.emergency-page {
 @media (max-width: 768px) {
   .em-level-banner { flex-direction: column; align-items: flex-start; }
   .em-level-detail { text-align: left; }
+}
+
+/* ---------- PATIENT QUEUE PAGE ---------- */
+body.patient-queue-page {
+  background: var(--gray-50);
+  padding-top: 68px;
+}
+
+.pq-header {
+  background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-main) 40%, var(--blue-mid) 100%);
+  padding: 40px 0 36px;
+  position: relative;
+  overflow: hidden;
+}
+.pq-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 15% 85%, rgba(255,255,255,.06) 0%, transparent 50%),
+    radial-gradient(circle at 85% 15%, rgba(255,255,255,.08) 0%, transparent 50%);
+}
+.pq-header .bt-header-row { position: relative; z-index: 1; }
+.pq-header .bt-title { color: var(--white); }
+.pq-header .bt-title em { color: #93C5FD; }
+.pq-header .bt-subtitle { color: rgba(255,255,255,.7); }
+.pq-header .bt-clock-label { color: rgba(255,255,255,.5); }
+.pq-header .bt-clock-time { color: var(--white); }
+
+.pq-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #BFDBFE;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  padding: 6px 14px;
+  border-radius: 100px;
+  margin-bottom: 22px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.pq-pulse {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #60A5FA;
+  box-shadow: 0 0 0 0 rgba(96,165,250,.6);
+  animation: pqPulse 1.5s infinite;
+}
+@keyframes pqPulse {
+  0% { box-shadow: 0 0 0 0 rgba(96,165,250,.6); }
+  70% { box-shadow: 0 0 0 10px rgba(96,165,250,0); }
+  100% { box-shadow: 0 0 0 0 rgba(96,165,250,0); }
+}
+
+/* Queue Stats Banner */
+.pq-stats-banner-section {
+  padding: 24px 0 0;
+}
+.pq-stats-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 28px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--blue-main);
+  background: var(--blue-pale);
+  transition: all 0.5s ease;
+}
+.pq-stats-banner.wait-low {
+  background: #F0FDF4;
+  border-color: #86EFAC;
+}
+.pq-stats-banner.wait-medium {
+  background: #FFFBEB;
+  border-color: #FDE68A;
+}
+.pq-stats-banner.wait-high {
+  background: #FEF2F2;
+  border-color: #FECACA;
+}
+.pq-stats-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.pq-stats-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+.pq-stats-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin-bottom: 2px;
+}
+.pq-stats-value {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--gray-800);
+}
+.pq-stats-right {
+  text-align: right;
+}
+.pq-stats-detail {
+  font-size: 14px;
+  color: var(--gray-600);
+  font-weight: 400;
+}
+
+/* Patient Queue card colors */
+.pq-card-waiting .bt-card-icon { background: #FFFBEB; color: var(--amber); }
+.pq-card-waiting .bt-card-num { color: var(--amber); }
+.pq-card-treating .bt-card-icon { background: var(--blue-light); color: var(--blue-main); }
+.pq-card-treating .bt-card-num { color: var(--blue-main); }
+.pq-card-critical .bt-card-icon { background: #FEF2F2; color: var(--red); }
+.pq-card-critical .bt-card-num { color: var(--red); }
+.pq-card-discharged .bt-card-icon { background: #ECFDF5; color: var(--green); }
+.pq-card-discharged .bt-card-num { color: var(--green); }
+
+/* Triage badge in table */
+.pq-triage-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 100px;
+  letter-spacing: 0.03em;
+}
+.pq-triage-badge.p1 { background: #FEF2F2; color: #991B1B; }
+.pq-triage-badge.p2 { background: #FFFBEB; color: #92400E; }
+.pq-triage-badge.p3 { background: #ECFDF5; color: #065F46; }
+.pq-triage-badge.p1::before,
+.pq-triage-badge.p2::before,
+.pq-triage-badge.p3::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.pq-triage-badge.p1::before { background: var(--red); }
+.pq-triage-badge.p2::before { background: var(--amber); }
+.pq-triage-badge.p3::before { background: var(--green); }
+
+/* Patient Queue responsive */
+@media (max-width: 768px) {
+  .pq-stats-banner { flex-direction: column; align-items: flex-start; }
+  .pq-stats-detail { text-align: left; }
 }
 
 /* ---------- ANIMATIONS ---------- */
