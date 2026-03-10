@@ -34,6 +34,6 @@ def login_page(request):
 
         except Staff.DoesNotExist:
 
-            return render(request, "login.html", {"error": "Invalid credentials"})
+            return render(request, "login2.html", {"error": "Invalid credentials"})
 
-    return render(request, "login.html")
+    return render(request, "login2.html")
