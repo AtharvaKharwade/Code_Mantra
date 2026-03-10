@@ -77,16 +77,7 @@ WSGI_APPLICATION = 'hospital_config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#  'default': {
-#   'ENGINE': 'django.db.backends.postgresql',
-#   'NAME': 'postgres',
-#   'USER': 'postgres',
-#   'PASSWORD': 'chaituAmb@35',
-#   'HOST': 'db.dpnfkmpykfuiazculduv.supabase.co',
-#   'PORT': '5432',
-#  }
-# }
+
 
 DATABASES = {
     "default": {
