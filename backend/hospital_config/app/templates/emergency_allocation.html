@@ -92,7 +92,15 @@ Rapidly redirect beds, staff, and equipment to where they're needed most during 
 <div class="bt-clock">
 
 <span class="bt-clock-label">Last Updated</span>
-<span class="bt-clock-time" id="emLiveTime">--:--:--</span>
+<span class="bt-clock-time" id="emLiveTime" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px;">
+	{% if last_updated %}
+		<span><strong>Time:</strong> {{ last_updated|date:"H:i:s" }}</span>
+		<span><strong>Date:</strong> {{ last_updated|date:"d-m-Y" }}</span>
+	{% else %}
+		<span><strong>Time:</strong> --:--:--</span>
+		<span><strong>Date:</strong> --/--/----</span>
+	{% endif %}
+</span>
 
 </div>
 

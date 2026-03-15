@@ -14,7 +14,7 @@
   <!-- NAVBAR -->
   <header class="navbar scrolled" id="navbar">
     <div class="nav-inner">
-      <a href="{% url 'home' %}" class="nav-logo">
+      <a href="{% url 'index' %}" class="nav-logo">
         <div class="logo-mark">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
             <rect width="28" height="28" rx="6" fill="#0057B8"/>
@@ -24,9 +24,9 @@
         <span>Hospital Resource <strong>Tracker</strong></span>
       </a>
       <nav class="nav-links" id="navLinks">
-        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'index' %}">Home</a>
         <a href="{% url 'equipment_monitoring' %}" class="active">Equipment</a>
-        <a href="{% url 'home' %}#features">Features</a>
+        <a href="{% url 'index' %}#features">Features</a>
         <a href="{% url 'login' %}" class="nav-login-btn">Login</a>
       </nav>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu">
@@ -49,7 +49,15 @@
         </div>
         <div class="bt-clock">
           <span class="bt-clock-label">Last Updated</span>
-          <span class="bt-clock-time" id="eqLiveTime">--:--:--</span>
+          <span class="bt-clock-time" id="eqLiveTime" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px;">
+            {% if last_updated %}
+              <span><strong>Time:</strong> {{ last_updated|date:"H:i:s" }}</span>
+              <span><strong>Date:</strong> {{ last_updated|date:"d-m-Y" }}</span>
+            {% else %}
+              <span><strong>Time:</strong> --:--:--</span>
+              <span><strong>Date:</strong> --/--/----</span>
+            {% endif %}
+          </span>
         </div>
       </div>
     </div>
@@ -65,7 +73,7 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <div class="bt-card-data">
-            <span class="bt-card-num" id="eqTotal">0</span>
+            <span class="bt-card-num" id="eqTotal">{{ total_equipment }}</span>
             <span class="bt-card-label">Total Equipment</span>
           </div>
           <div class="bt-card-bar">
@@ -78,11 +86,11 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M8 12l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/></svg>
           </div>
           <div class="bt-card-data">
-            <span class="bt-card-num" id="eqActive">0</span>
+            <span class="bt-card-num" id="eqActive">{{ in_use_pct }}%</span>
             <span class="bt-card-label">In Use / Active</span>
           </div>
           <div class="bt-card-bar">
-            <div class="bt-card-bar-fill" id="eqActiveBar" style="--bar-pct: 0%; --bar-color: var(--green);"></div>
+            <div class="bt-card-bar-fill" id="eqActiveBar" style="--bar-pct: {{ in_use_pct }}%; --bar-color: var(--green);"></div>
           </div>
         </div>
 
@@ -91,11 +99,11 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M8 12h8M8 8h5M8 16h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </div>
           <div class="bt-card-data">
-            <span class="bt-card-num" id="eqAvailable">0</span>
+            <span class="bt-card-num" id="eqAvailable">{{ available_pct }}%</span>
             <span class="bt-card-label">Available / Standby</span>
           </div>
           <div class="bt-card-bar">
-            <div class="bt-card-bar-fill" id="eqAvailableBar" style="--bar-pct: 0%; --bar-color: var(--blue-mid);"></div>
+            <div class="bt-card-bar-fill" id="eqAvailableBar" style="--bar-pct: {{ available_pct }}%; --bar-color: var(--blue-mid);"></div>
           </div>
         </div>
 
@@ -104,29 +112,17 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.73 20.2a2 2 0 01-2.83 0l-.1-.1a2 2 0 010-2.83l6.73-6.73A6 6 0 0114.7 6.3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <div class="bt-card-data">
-            <span class="bt-card-num" id="eqMaintenance">0</span>
+            <span class="bt-card-num" id="eqMaintenance">{{ maintenance_pct }}%</span>
             <span class="bt-card-label">Under Maintenance</span>
           </div>
           <div class="bt-card-bar">
-            <div class="bt-card-bar-fill" id="eqMaintenanceBar" style="--bar-pct: 0%; --bar-color: var(--red);"></div>
+            <div class="bt-card-bar-fill" id="eqMaintenanceBar" style="--bar-pct: {{ maintenance_pct }}%; --bar-color: var(--red);"></div>
           </div>
         </div>
 
       </div>
-    </div>
-  </section>
 
-  <!-- EQUIPMENT TABLE -->
-  <section class="bt-wards">
-    <div class="section-inner">
-      <div class="bt-wards-header">
-        <h2>Equipment Breakdown by Category</h2>
-        <div class="bt-legend">
-          <span class="bt-legend-item"><span class="bt-dot green"></span> Available</span>
-          <span class="bt-legend-item"><span class="bt-dot amber"></span> In Use</span>
-          <span class="bt-legend-item"><span class="bt-dot red"></span> Maintenance</span>
-        </div>
-      </div>
+      <!-- Equipment Table -->
       <div class="bt-table-wrap">
         <table class="bt-table">
           <thead>
@@ -141,7 +137,17 @@
             </tr>
           </thead>
           <tbody id="eqTableBody">
-            <!-- Rows injected by JS -->
+            {% for eq in equipment %}
+            <tr>
+              <td>{{ eq.name }}</td>
+              <td>{{ eq.total }}</td>
+              <td>{{ eq.in_use }}</td>
+              <td>{{ eq.available }}</td>
+              <td>{{ eq.maintenance }}</td>
+              <td>{{ eq.usage_pct }}%</td>
+              <td>{{ eq.get_status_display }}</td>
+            </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
@@ -153,7 +159,15 @@
     <div class="section-inner">
       <h2>Usage Rate by Equipment</h2>
       <div class="bt-bar-chart" id="eqBarChart">
-        <!-- Bars injected by JS -->
+        {% for rate in usage_rates %}
+        <div class="bt-bar-row">
+          <span class="bt-bar-label">{{ rate.name }}</span>
+          <div class="bt-bar">
+            <div class="bt-bar-fill" style="width:{{ rate.usage_pct }}%;background-color:var(--blue-main);"></div>
+          </div>
+          <span class="bt-bar-count">{{ rate.usage_pct }}%</span>
+        </div>
+        {% endfor %}
       </div>
     </div>
   </section>
@@ -163,7 +177,11 @@
     <div class="section-inner">
       <h2>Active Alerts</h2>
       <div class="eq-alerts-list" id="eqAlertsList">
-        <!-- Alerts injected by JS -->
+        {% for alert in alerts %}
+        <div class="eq-alert-item">{{ alert }}</div>
+        {% empty %}
+        <div class="eq-alert-item">No active alerts.</div>
+        {% endfor %}
       </div>
     </div>
   </section>
@@ -185,11 +203,11 @@
       </div>
       <div class="footer-links">
         <h5>Navigation</h5>
-        <a href="index.html">Home</a>
-        <a href="bed-tracking.html">Bed Tracking</a>
-        <a href="equipment-monitoring.html">Equipment</a>
-        <a href="index.html#features">Features</a>
-        <a href="login.html">Login</a>
+        <a href="{% url 'index' %}">Home</a>
+        <a href="{% url 'bed_tracking' %}">Bed Tracking</a>
+        <a href="{% url 'equipment_monitoring' %}">Equipment</a>
+        <a href="{% url 'index' %}#features">Features</a>
+        <a href="{% url 'login' %}">Login</a>
       </div>
       <div class="footer-contact">
         <h5>Contact</h5>

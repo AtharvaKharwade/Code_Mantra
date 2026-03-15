@@ -25,10 +25,10 @@
         <span>Hospital Resource <strong>Tracker</strong></span>
       </a>
       <nav class="nav-links" id="navLinks">
-        <a href="index.html">Home</a>
-        <a href="patient-queue.html" class="active">Patient Queue</a>
-        <a href="index.html#features">Features</a>
-        <a href="login.html" class="nav-login-btn">Login</a>
+        <a href="{% url 'index' %}#home">Home</a>
+        <a href="{% url 'patient_queue' %}" class="active">Patient Queue</a>
+        <a href="{% url 'index' %}#features">Features</a>
+        <a href="{% url 'login' %}" class="nav-login-btn">Login</a>
       </nav>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
@@ -50,7 +50,15 @@
         </div>
         <div class="bt-clock">
           <span class="bt-clock-label">Last Updated</span>
-          <span class="bt-clock-time" id="pqLiveTime">--:--:--</span>
+          <span class="bt-clock-time" id="pqLiveTime" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px;">
+            {% if last_updated %}
+              <span><strong>Time:</strong> {{ last_updated|date:"H:i:s" }}</span>
+              <span><strong>Date:</strong> {{ last_updated|date:"d-m-Y" }}</span>
+            {% else %}
+              <span><strong>Time:</strong> --:--:--</span>
+              <span><strong>Date:</strong> --/--/----</span>
+            {% endif %}
+          </span>
         </div>
       </div>
     </div>
@@ -64,7 +72,7 @@
           <span class="pq-stats-icon">⏱️</span>
           <div>
             <span class="pq-stats-label">Average Wait Time</span>
-            <span class="pq-stats-value" id="pqAvgWait">--</span>
+            <span class="pq-stats-value" id="pqAvgWait">{{ avg_wait }} min</span>
           </div>
         </div>
         <div class="pq-stats-right">
@@ -84,11 +92,11 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <div class="bt-card-data">
-            <span class="bt-card-num" id="pqWaiting">0</span>
+            <span class="bt-card-num" id="pqWaiting">{{ waiting }}</span>
             <span class="bt-card-label">Patients Waiting</span>
           </div>
           <div class="bt-card-bar">
-            <div class="bt-card-bar-fill" id="pqWaitingBar" style="--bar-pct: 0%; --bar-color: var(--amber);"></div>
+            <div class="bt-card-bar-fill" id="pqWaitingBar" style="--bar-pct: {{ waiting_pct }}%; --bar-color: var(--amber);"></div>
           </div>
         </div>
 
@@ -97,11 +105,11 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
           </div>
           <div class="bt-card-data">
-            <span class="bt-card-num" id="pqTreating">0</span>
+            <span class="bt-card-num" id="pqTreating">{{ treating }}</span>
             <span class="bt-card-label">Being Treated</span>
           </div>
           <div class="bt-card-bar">
-            <div class="bt-card-bar-fill" id="pqTreatingBar" style="--bar-pct: 0%; --bar-color: var(--blue-main);"></div>
+            <div class="bt-card-bar-fill" id="pqTreatingBar" style="--bar-pct: {{ treating_pct }}%; --bar-color: var(--blue-main);"></div>
           </div>
         </div>
 
@@ -110,11 +118,11 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <div class="bt-card-data">
-            <span class="bt-card-num" id="pqCritical">0</span>
+            <span class="bt-card-num" id="pqCritical">{{ critical }}</span>
             <span class="bt-card-label">Critical Priority</span>
           </div>
           <div class="bt-card-bar">
-            <div class="bt-card-bar-fill" id="pqCriticalBar" style="--bar-pct: 0%; --bar-color: var(--red);"></div>
+            <div class="bt-card-bar-fill" id="pqCriticalBar" style="--bar-pct: {{ critical_pct }}%; --bar-color: var(--red);"></div>
           </div>
         </div>
 
@@ -123,11 +131,11 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22 4 12 14.01 9 11.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <div class="bt-card-data">
-            <span class="bt-card-num" id="pqDischarged">0</span>
+            <span class="bt-card-num" id="pqDischarged">{{ discharged }}</span>
             <span class="bt-card-label">Discharged Today</span>
           </div>
           <div class="bt-card-bar">
-            <div class="bt-card-bar-fill" id="pqDischargedBar" style="--bar-pct: 0%; --bar-color: var(--green);"></div>
+            <div class="bt-card-bar-fill" id="pqDischargedBar" style="--bar-pct: {{ discharged_pct }}%; --bar-color: var(--green);"></div>
           </div>
         </div>
 
@@ -159,6 +167,16 @@
             </tr>
           </thead>
           <tbody id="pqTableBody">
+            {% for patient in patients %}
+            <tr>
+              <td>{{ patient.patient_id }}</td>
+              <td>{{ patient.triage_level }}</td>
+              <td>{{ patient.chief_complaint }}</td>
+              <td>{{ patient.wait_time_display }}</td>
+              <td>{{ patient.assigned_to }}</td>
+              <td>{{ patient.status }}</td>
+            </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
@@ -170,6 +188,15 @@
     <div class="section-inner">
       <h2>Triage Level Distribution</h2>
       <div class="bt-bar-chart" id="pqBarChart">
+        {% for dist in triage_dist %}
+        <div class="bt-bar-row">
+          <span class="bt-bar-label">{{ dist.triage_level }}</span>
+          <div class="bt-bar">
+            <div class="bt-bar-fill" style="width:{{ dist.count|add:'0'|floatformat:0 }}0px;background-color:{% if dist.triage_level == 'P1' %}var(--red){% elif dist.triage_level == 'P2' %}var(--amber){% else %}var(--green){% endif %};"></div>
+          </div>
+          <span class="bt-bar-count">{{ dist.count }}</span>
+        </div>
+        {% endfor %}
       </div>
     </div>
   </section>
@@ -179,6 +206,9 @@
     <div class="section-inner">
       <h2>Queue Alerts</h2>
       <div class="eq-alerts-list" id="pqAlertsList">
+        {% for alert in queue_alerts %}
+        <div class="eq-alert-item">{{ alert }}</div>
+        {% endfor %}
       </div>
     </div>
   </section>
@@ -200,12 +230,12 @@
       </div>
       <div class="footer-links">
         <h5>Navigation</h5>
-        <a href="index.html">Home</a>
-        <a href="bed-tracking.html">Bed Tracking</a>
-        <a href="equipment-monitoring.html">Equipment</a>
-        <a href="emergency-allocation.html">Emergency</a>
-        <a href="patient-queue.html">Patient Queue</a>
-        <a href="login.html">Login</a>
+        <a href="{% url 'index' %}#home ">Home</a>
+        <a href="{%url 'bed_tracking' %}">Bed Tracking</a>
+        <a href="{%url 'equipment_monitoring' %}">Equipment</a>
+        <a href="{%url 'emergency_allocation' %}">Emergency</a>
+        <a href="{% url 'patient_queue' %}">Patient Queue</a>
+        <a href="{% url 'login' %}">Login</a>
       </div>
       <div class="footer-contact">
         <h5>Contact</h5>
